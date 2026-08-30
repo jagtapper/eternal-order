@@ -1,36 +1,51 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Eternal Order | Sanatan Dharma
 
-## Getting Started
+A dark editorial journal. Sanatan dharma as a philosophy and way of life: four aims, four varnas as one body, pancha mahabhuta gathered as panchamrita. Next.js, Tailwind, GSAP, Lenis, and MDX.
 
-First, run the development server:
+This site lives at `bhau-os/Bhau-OS_Website`. Brand marks are in `assets/` and `public/brand/`.
+
+## Run
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Production:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build
+npm start
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Add content
 
-## Learn More
+Drop an `.mdx` file into one of these folders:
 
-To learn more about Next.js, take a look at the following resources:
+- `content/education/`
+- `content/videos/`
+- `content/digests/`
+- `content/ideas/`
+- `content/now/` (Michigan moment on the landing page; newest date wins)
+- `content/spotlight/` (Sanatan Spotlight video/conversation; newest date wins)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Frontmatter:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```md
+---
+title: "The title"
+description: "One or two sentences."
+date: "2026-08-13"
+cover: "/images/hero-stepwell.jpg"
+alt: "Plain description of the image"
+reading: "7 min"
+duration: "02:18"
+featured: false
+---
+```
 
-## Deploy on Vercel
+`duration` is for shorts. Set `featured: true` on one video to pin it on the home page.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Notes
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+A journal of an inherited way of living, not a religion and not an organization. No membership or donation primary paths.
