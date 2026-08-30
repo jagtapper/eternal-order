@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
-import { addSubscriber, isValidEmail, normalizeEmail } from "@/lib/subscribers";
+import { isValidEmail, normalizeEmail } from "@/lib/subscribers";
+
+const WEB3FORMS = "https://api.web3forms.com/submit";
 
 export async function POST(request: Request) {
   let body: unknown;
@@ -35,6 +37,43 @@ export async function POST(request: Request) {
     );
   }
 
-  addSubscriber(email);
+  const accessKey = process.env.WEB3FORMS_ACCESS_KEY;
+  if (!accessKey) {
+    return NextResponse.json(
+      { error: "Could not save it. Try again." },
+      { status: 503 },
+    );
+  }
+
+  try {
+    const response = await fetch(WEB3FORMS, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify({
+        access_key: accessKey,
+        email,
+        subject: "Eternal Order: stay updated",
+        from_name: "Eternal Order",
+        message: "Weekly pulse signup. No membership.",
+      }),
+    });
+
+    const data = (await response.json().catch(() => null)) as
+      | { success?: boolean }
+      | null;
+
+    if (!response.ok || !data?.success) {
+      return NextResponse.json(
+        { error: "Could not save it. Try again." },
+        { status: 502 },
+      );
+    }
+  } catch {
+    return NextResponse.json(
+      { error: "Could not save it. Try again." },
+      { status: 502 },
+    );
+  }
+
   return NextResponse.json({ ok: true });
 }
