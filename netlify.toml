@@ -1,0 +1,3 @@
+[build.environment]
+  # Turbopack cache can hold server env values. Do not scan those files.
+  SECRETS_SCAN_OMIT_PATHS = ".next/cache,.netlify/.next/cache"

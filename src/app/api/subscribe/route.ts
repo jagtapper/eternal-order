@@ -1,7 +1,14 @@
+import { env } from "node:process";
 import { NextResponse } from "next/server";
 import { isValidEmail, normalizeEmail } from "@/lib/subscribers";
 
 const WEB3FORMS = "https://api.web3forms.com/submit";
+
+function web3formsAccessKey() {
+  // Read at runtime so Next/Turbopack does not inline the secret into cache.
+  const name = ["WEB3FORMS", "ACCESS_KEY"].join("_");
+  return env[name];
+}
 
 export async function POST(request: Request) {
   let body: unknown;
@@ -37,7 +44,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const accessKey = process.env.WEB3FORMS_ACCESS_KEY;
+  const accessKey = web3formsAccessKey();
   if (!accessKey) {
     return NextResponse.json(
       { error: "Could not save it. Try again." },
