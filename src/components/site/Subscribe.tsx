@@ -6,6 +6,8 @@ import { ArrowUpRight } from "@phosphor-icons/react";
 type Status = "idle" | "saving" | "done" | "error";
 type Variant = "footer" | "hero";
 
+const WEB3FORMS = "https://api.web3forms.com/submit";
+
 export function Subscribe({ variant = "footer" }: { variant?: Variant }) {
   const uid = useId();
   const emailId = `subscribe-email-${uid}`;
@@ -22,21 +24,41 @@ export function Subscribe({ variant = "footer" }: { variant?: Variant }) {
     setMessage("");
 
     const form = new FormData(event.currentTarget);
+    const company = String(form.get("company") ?? "");
+    const submittedEmail = String(form.get("email") ?? "");
+
+    // Honeypot: bots fill hidden fields. Pretend it worked.
+    if (company.trim()) {
+      setStatus("done");
+      setEmail("");
+      setMessage("You are on the list. When the next pulse is ready, it will find you.");
+      return;
+    }
+
+    const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY;
+    if (!accessKey) {
+      setStatus("error");
+      setMessage("Could not save it. Try again.");
+      return;
+    }
 
     try {
-      const response = await fetch("/api/subscribe", {
+      const response = await fetch(WEB3FORMS, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify({
-          email: String(form.get("email") ?? ""),
-          company: String(form.get("company") ?? ""),
+          access_key: accessKey,
+          email: submittedEmail,
+          subject: "Eternal Order: stay updated",
+          from_name: "Eternal Order",
+          message: "Weekly pulse signup. No membership.",
         }),
       });
-      const data = (await response.json()) as { error?: string };
+      const data = (await response.json()) as { success?: boolean };
 
-      if (!response.ok) {
+      if (!response.ok || !data.success) {
         setStatus("error");
-        setMessage(data.error ?? "Could not save it. Try again.");
+        setMessage("Could not save it. Try again.");
         return;
       }
 
