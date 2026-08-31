@@ -12,15 +12,48 @@ if (typeof window !== "undefined") {
 }
 
 const NODE_ANCHORS = [
-  "left-[50%] top-[13%]",
-  "left-[87%] top-[50%]",
-  "left-[50%] top-[87%]",
-  "left-[13%] top-[50%]",
+  "left-[50%] top-[20%]",
+  "left-[80%] top-[50%]",
+  "left-[50%] top-[80%]",
+  "left-[20%] top-[50%]",
 ] as const;
+
+function sizeMandala(root: HTMLElement) {
+  const slot = root.querySelector<HTMLElement>(".aim-mandala-slot");
+  const mandala = root.querySelector<HTMLElement>("[data-aim-mandala]");
+  if (!slot || !mandala) return;
+
+  const gutter = window.matchMedia("(min-width: 768px)").matches ? 0 : 28;
+  const side = Math.min(slot.clientWidth, slot.clientHeight) - gutter * 2;
+  const size = Math.max(96, Math.floor(side));
+  mandala.style.width = `${size}px`;
+  mandala.style.height = `${size}px`;
+  mandala.style.maxWidth = "none";
+  mandala.style.maxHeight = "none";
+}
 
 export function DharmaAspects() {
   const rootRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+
+    const layout = () => sizeMandala(root);
+    layout();
+    const slot = root.querySelector(".aim-mandala-slot");
+    const observer = slot ? new ResizeObserver(layout) : null;
+    if (slot) observer?.observe(slot);
+    window.addEventListener("resize", layout);
+    window.visualViewport?.addEventListener("resize", layout);
+
+    return () => {
+      observer?.disconnect();
+      window.removeEventListener("resize", layout);
+      window.visualViewport?.removeEventListener("resize", layout);
+    };
+  }, []);
 
   useEffect(() => {
     const root = rootRef.current;
@@ -30,9 +63,7 @@ export function DharmaAspects() {
     const ctx = gsap.context(() => {
       const mm = gsap.matchMedia();
 
-      mm.add(
-        "(min-width: 768px) and (prefers-reduced-motion: no-preference)",
-        () => {
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
           const nodes = gsap.utils.toArray<HTMLElement>("[data-aim-orb]");
           const rings = gsap.utils.toArray<HTMLElement>("[data-aim-ring]");
           const copies = gsap.utils.toArray<HTMLElement>("[data-aim-copy]");
@@ -47,12 +78,14 @@ export function DharmaAspects() {
           gsap.set(nodes[0], { opacity: 1, scale: 1.04 });
           gsap.set(arm, { rotation: 0, transformOrigin: "50% 100%" });
           root.dataset.scene = "on";
+          sizeMandala(root);
+          requestAnimationFrame(() => sizeMandala(root));
 
           const tl = gsap.timeline({
             defaults: { ease: "none" },
             scrollTrigger: {
               trigger: track,
-              start: "top 5.1rem",
+              start: "top 4.75rem",
               end: "bottom bottom",
               scrub: 1.15,
               invalidateOnRefresh: true,
@@ -95,7 +128,10 @@ export function DharmaAspects() {
           tl.to(rings, { autoAlpha: 0.85, duration: 1.05 }, 5);
           tl.to(arm, { rotation: 360, duration: 1.05 }, 5);
 
-          const refresh = () => ScrollTrigger.refresh();
+          const refresh = () => {
+            sizeMandala(root);
+            ScrollTrigger.refresh();
+          };
           root.querySelectorAll("img").forEach((image) => {
             if (!image.complete) {
               image.addEventListener("load", refresh, { once: true });
@@ -117,8 +153,8 @@ export function DharmaAspects() {
   }, []);
 
   return (
-    <section ref={rootRef} className="aims-scene px-5 py-16 md:px-8 md:py-20">
-      <div className="mx-auto max-w-[1280px]">
+    <section ref={rootRef} className="aims-scene py-12 md:py-20">
+      <div className="mx-auto max-w-[1280px] px-5 md:px-8">
         <h2
           data-split-reveal
           className="scroll-mt-28 max-w-4xl font-display text-4xl leading-[1.08] tracking-[-0.03em] text-ivory md:text-5xl"
@@ -136,13 +172,14 @@ export function DharmaAspects() {
       </div>
 
       <div ref={trackRef} className="aim-track mt-5">
-        <div className="aim-stage">
-          <div className="mx-auto flex h-full w-full max-w-[1280px] flex-col">
-            <div className="flex min-h-0 flex-1 items-center justify-center overflow-hidden">
-              <div className="relative aspect-square h-auto min-h-[18rem] w-full max-w-[min(100%,90vw)] md:h-full md:min-h-0 md:w-auto md:max-h-full md:max-w-full">
+        <div className="aim-stage w-full bg-ink">
+          <div className="flex h-full min-h-0 w-full min-w-0 flex-col">
+            <div className="aim-mandala-slot">
+              <div data-aim-mandala className="aim-mandala relative aspect-square">
                 <svg
-                  className="pointer-events-none absolute inset-[12%] text-gold"
+                  className="pointer-events-none absolute left-[20%] top-[20%] h-[60%] w-[60%] text-gold"
                   viewBox="0 0 100 100"
+                  preserveAspectRatio="xMidYMid meet"
                   aria-hidden="true"
                 >
                   <circle
@@ -216,7 +253,7 @@ export function DharmaAspects() {
                 </svg>
 
                 <div
-                  className="pointer-events-none absolute inset-[12%] z-20"
+                  className="pointer-events-none absolute left-[20%] top-[20%] z-20 h-[60%] w-[60%]"
                   aria-hidden="true"
                 >
                   <div data-aim-arm className="absolute left-1/2 top-0 h-1/2 w-0 origin-bottom">
@@ -227,7 +264,7 @@ export function DharmaAspects() {
                 {purusharthas.map((aspect, index) => (
                   <article
                     key={aspect.slug}
-                    className={`absolute z-10 w-[26%] -translate-x-1/2 -translate-y-1/2 ${NODE_ANCHORS[index]}`}
+                    className={`absolute z-10 w-[20%] -translate-x-1/2 -translate-y-1/2 md:w-[22%] ${NODE_ANCHORS[index]}`}
                   >
                     <span
                       data-aim-ring
@@ -259,7 +296,7 @@ export function DharmaAspects() {
               </div>
             </div>
 
-            <div className="shrink-0 pt-3">
+            <div className="relative z-10 mx-auto w-full max-w-[1280px] shrink-0 px-5 pt-3 md:px-8">
               <div className="aim-well max-w-3xl">
                 {purusharthas.map((aspect) => (
                   <article key={aspect.slug} data-aim-copy className="aim-copy">

@@ -46,18 +46,23 @@ export function MotionRoot() {
       return;
     }
 
-    const lenis = new Lenis({
-      lerp: 0.08,
-      smoothWheel: true,
-      wheelMultiplier: 0.9,
-    });
+    const lenis = desktop
+      ? new Lenis({
+          lerp: 0.08,
+          smoothWheel: true,
+          wheelMultiplier: 0.9,
+        })
+      : null;
 
-    lenis.on("scroll", ScrollTrigger.update);
     const ticker = (time: number) => {
-      lenis.raf(time * 1000);
+      lenis?.raf(time * 1000);
     };
-    gsap.ticker.add(ticker);
-    gsap.ticker.lagSmoothing(0);
+
+    if (lenis) {
+      lenis.on("scroll", ScrollTrigger.update);
+      gsap.ticker.add(ticker);
+      gsap.ticker.lagSmoothing(0);
+    }
 
     const ctx = gsap.context(() => {
       const heroItems = gsap.utils.toArray<HTMLElement>("[data-hero-item]");
@@ -185,8 +190,10 @@ export function MotionRoot() {
     return () => {
       window.removeEventListener("load", refresh);
       ctx.revert();
-      gsap.ticker.remove(ticker);
-      lenis.destroy();
+      if (lenis) {
+        gsap.ticker.remove(ticker);
+        lenis.destroy();
+      }
     };
   }, []);
 

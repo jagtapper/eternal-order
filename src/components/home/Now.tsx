@@ -18,7 +18,7 @@ function Feed({
       </p>
       <div
         data-lenis-prevent
-        className="now-feed max-h-[28rem] space-y-3 overflow-y-auto overscroll-contain rounded-[1.4rem] border border-ivory/14 bg-ink/20 p-2 md:max-h-[min(52rem,72vh)] md:p-2.5"
+        className="now-feed max-h-[15.5rem] space-y-3 overflow-y-auto overscroll-contain rounded-[1.4rem] border border-ivory/14 bg-ink/20 p-2 md:max-h-[min(52rem,72vh)] md:p-2.5"
       >
         {children}
       </div>

@@ -71,7 +71,7 @@ export function Hero({
       <div className="absolute inset-0 bg-gradient-to-b from-ink/70 via-ink/45 to-ink" />
       <Atmosphere />
 
-      <div className="relative z-10 mx-auto flex min-h-[100dvh] max-w-[1180px] flex-col justify-between gap-8 px-5 pb-10 pt-28 md:px-8 md:pb-12 md:pt-[6.75rem]">
+      <div className="relative z-10 mx-auto flex min-h-[100dvh] max-w-[1180px] flex-col justify-between gap-6 px-5 pb-8 pt-24 md:gap-8 md:px-8 md:pb-12 md:pt-[6.75rem]">
         <div data-hero-item>
           <Now notes={notes} spotlights={spotlights} />
         </div>
@@ -88,7 +88,7 @@ export function Hero({
               </h2>
               <Link
                 href="/education"
-                className="hidden shrink-0 text-[13px] tracking-[0.04em] text-gold md:inline"
+                className="shrink-0 text-[13px] tracking-[0.04em] text-gold"
               >
                 All lessons
               </Link>

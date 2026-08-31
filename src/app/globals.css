@@ -24,12 +24,20 @@
   color-scheme: dark;
   --background: #0d0b0a;
   --foreground: #f5ece0;
+  --stage-top: 4.75rem;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --stage-top: 5.1rem;
+  }
 }
 
 html,
 body {
   background: var(--background);
   color: var(--foreground);
+  max-width: 100%;
 }
 
 html {
@@ -82,9 +90,9 @@ a {
 .scroll-wheel__anchor {
   position: absolute;
   left: 50%;
-  top: 48%;
-  width: min(110vmin, 64rem);
-  height: min(110vmin, 64rem);
+  top: 50%;
+  width: min(118%, 28rem);
+  height: min(118%, 28rem);
   transform: translate(-50%, -50%);
 }
 
@@ -92,7 +100,7 @@ a {
   width: 100%;
   height: 100%;
   color: var(--color-gold);
-  opacity: 0.09;
+  opacity: 0.12;
   will-change: transform;
   transform-origin: 50% 50%;
 }
@@ -169,6 +177,7 @@ a {
 .now-feed {
   scrollbar-width: thin;
   scrollbar-color: rgb(217 139 69 / 0.45) transparent;
+  -webkit-overflow-scrolling: touch;
 }
 
 .now-feed::-webkit-scrollbar {
@@ -204,11 +213,11 @@ a {
 }
 
 .aims-scene[data-scene="on"] .aim-well {
-  min-height: 10rem;
+  min-height: 11.5rem;
 }
 
 .varna-scene[data-scene="on"] .varna-well {
-  min-height: 5.75rem;
+  min-height: 7.5rem;
 }
 
 .aims-scene[data-scene="on"] .aim-copy,
@@ -219,25 +228,67 @@ a {
 
 .aims-scene[data-scene="on"] .aim-track,
 .varna-scene[data-scene="on"] .varna-track {
-  height: 360vh;
+  height: 240vh;
 }
 
 .aims-scene[data-scene="on"] .aim-stage,
 .varna-scene[data-scene="on"] .varna-stage {
   position: sticky;
-  top: 5.1rem;
+  top: var(--stage-top);
+  left: 0;
+  right: 0;
+  z-index: 2;
   display: flex;
   align-items: stretch;
-  height: calc(100dvh - 5.1rem);
-  padding: 0.75rem 1.25rem 1rem;
-  background: var(--color-ink);
+  width: 100%;
+  max-width: 100%;
+  height: calc(100dvh - var(--stage-top));
+  padding: 0.5rem 0 0.85rem;
+  overflow: hidden;
+  background: #0d0b0a;
+}
+
+.aim-mandala-slot {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.aim-mandala {
+  position: relative;
+  flex-shrink: 0;
+  width: 86%;
+  max-width: 22.5rem;
+  aspect-ratio: 1 / 1;
+  height: auto;
+  overflow: hidden;
 }
 
 @media (min-width: 768px) {
+  .aims-scene[data-scene="on"] .aim-track,
+  .varna-scene[data-scene="on"] .varna-track {
+    height: 360vh;
+  }
+
   .aims-scene[data-scene="on"] .aim-stage,
   .varna-scene[data-scene="on"] .varna-stage {
-    padding-left: 2rem;
-    padding-right: 2rem;
+    padding: 0.75rem 0 1rem;
+  }
+
+  .aim-mandala {
+    width: auto;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+  }
+
+  .aims-scene[data-scene="on"] .aim-well {
+    min-height: 10rem;
   }
 }
 

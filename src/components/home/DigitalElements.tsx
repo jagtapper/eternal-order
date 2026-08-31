@@ -66,7 +66,10 @@ export function DigitalElements() {
             The five great elements, subtle to gross: space, air, fire, water,
             earth. Shown here earth to space so the row can sit over the nectars.
           </p>
-          <div className="mt-6 flex snap-x gap-4 overflow-x-auto pb-2 md:grid md:grid-cols-5 md:overflow-visible md:pb-0">
+          <div
+            data-lenis-prevent
+            className="mt-6 flex min-w-0 max-w-full snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain pb-2 md:grid md:grid-cols-5 md:overflow-visible md:pb-0"
+          >
             {mahabhuta.map((item) => (
               <CompareCard
                 key={item.slug}
@@ -89,7 +92,10 @@ export function DigitalElements() {
             Five nectars. A household rhyme lines them under the elements. That
             pairing is pedagogy, not a verse.
           </p>
-          <div className="mt-6 flex snap-x gap-4 overflow-x-auto pb-2 md:grid md:grid-cols-5 md:overflow-visible md:pb-0">
+          <div
+            data-lenis-prevent
+            className="mt-6 flex min-w-0 max-w-full snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain pb-2 md:grid md:grid-cols-5 md:overflow-visible md:pb-0"
+          >
             {panchamrita.map((item) => (
               <CompareCard
                 key={item.slug}

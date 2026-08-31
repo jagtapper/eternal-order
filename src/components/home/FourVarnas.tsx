@@ -23,9 +23,7 @@ export function FourVarnas() {
     const ctx = gsap.context(() => {
       const mm = gsap.matchMedia();
 
-      mm.add(
-        "(min-width: 768px) and (prefers-reduced-motion: no-preference)",
-        () => {
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
           const media = gsap.utils.toArray<HTMLElement>("[data-varna-media]");
           const veils = gsap.utils.toArray<HTMLElement>("[data-varna-veil]");
           const copies = gsap.utils.toArray<HTMLElement>("[data-varna-copy]");
@@ -50,7 +48,7 @@ export function FourVarnas() {
             defaults: { ease: "none" },
             scrollTrigger: {
               trigger: track,
-              start: "top 5.1rem",
+              start: "top 4.75rem",
               end: "bottom bottom",
               scrub: 1.15,
               invalidateOnRefresh: true,
@@ -104,8 +102,8 @@ export function FourVarnas() {
   }, []);
 
   return (
-    <section ref={rootRef} className="varna-scene px-5 py-16 md:px-8 md:py-20">
-      <div className="mx-auto max-w-[1280px]">
+    <section ref={rootRef} className="varna-scene py-12 md:py-20">
+      <div className="mx-auto max-w-[1280px] px-5 md:px-8">
         <h2
           data-split-reveal
           className="scroll-mt-28 max-w-4xl font-display text-4xl leading-[1.08] tracking-[-0.03em] text-ivory md:text-5xl"
@@ -132,10 +130,10 @@ export function FourVarnas() {
       </div>
 
       <div ref={trackRef} className="varna-track mt-5">
-        <div className="varna-stage w-full">
-          <div className="mx-auto flex h-full w-full max-w-[1280px] flex-col">
+        <div className="varna-stage w-full bg-ink">
+          <div className="mx-auto flex h-full min-h-0 w-full min-w-0 max-w-[1280px] flex-col px-5 md:px-8">
             <div className="flex min-h-0 flex-1">
-              <div className="relative flex h-full min-h-[22rem] w-full flex-col overflow-hidden rounded-[2rem] border border-ivory/10 bg-gold/20 p-[3px]">
+              <div className="relative flex h-full min-h-[18rem] w-full flex-col overflow-hidden rounded-[1.5rem] border border-ivory/10 bg-gold/20 p-[3px] md:min-h-[22rem] md:rounded-[2rem]">
                 <span
                   data-varna-lintel
                   className="pointer-events-none absolute inset-x-5 top-2 z-10 hidden h-px bg-gold md:block"
