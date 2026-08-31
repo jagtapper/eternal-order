@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Eczar, Geist_Mono, Inknut_Antiqua, Noto_Serif_Devanagari } from "next/font/google";
 import { Footer } from "@/components/site/Footer";
 import { Nav } from "@/components/site/Nav";
+import { Analytics } from "@/components/site/Analytics";
 import { MotionRoot } from "@/components/motion/MotionRoot";
 import { ScrollWheel } from "@/components/motion/ScrollWheel";
 import { site } from "@/lib/site";
@@ -73,6 +74,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${display.variable} ${sans.variable} ${deva.variable} ${mono.variable} h-full antialiased`}
     >
       <body className="min-h-full bg-ink font-sans text-ivory">
+        <Analytics />
         <div className="grain" aria-hidden="true" />
         <div className="sutra hidden md:block" aria-hidden="true" />
         <ScrollWheel />
