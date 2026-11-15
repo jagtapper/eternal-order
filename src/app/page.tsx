@@ -10,6 +10,7 @@ import { UnityLesson } from "@/components/home/UnityLesson";
 import { Yugas } from "@/components/home/Yugas";
 import { getAllArticles, getFeatured } from "@/lib/content";
 import { getNowNotes, getSpotlights } from "@/lib/now";
+import { getFrontierCards } from "@/lib/frontier";
 
 export const dynamic = "force-dynamic";
 
@@ -20,10 +21,17 @@ export default function Home() {
     articles.find((item) => item.kind !== "now") ?? featured;
   const notes = getNowNotes();
   const spotlights = getSpotlights();
+  // Yuga Signal cards in display order
+  const frontier = getFrontierCards();
 
   return (
     <>
-      <Hero newest={newest!} notes={notes} spotlights={spotlights} />
+      <Hero
+        newest={newest!}
+        notes={notes}
+        spotlights={spotlights}
+        frontier={frontier}
+      />
       <FourVarnas />
       <DharmaAspects />
       <Yugas />

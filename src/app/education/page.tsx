@@ -1,5 +1,7 @@
 import { IndexFrame } from "@/components/content/IndexFrame";
+import { YugaSignalBlock } from "@/components/content/YugaSignal";
 import { getAll } from "@/lib/content";
+import { getFrontierCards } from "@/lib/frontier";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -10,10 +12,14 @@ export const metadata: Metadata = {
 
 export default function EducationPage() {
   return (
-    <IndexFrame
-      title="Education"
-      lede="A way of life, walked in pieces: how the mind is built, four ages, four aims, how a society divided its labor, two rows of fives, then the stories."
-      pieces={getAll("education")}
-    />
+    <>
+      <IndexFrame
+        title="Education"
+        lede="A way of life, walked in pieces: how the mind is built, four ages, four aims, how a society divided its labor, two rows of fives, then the stories."
+        pieces={getAll("education")}
+      />
+      {/* Yuga Signal frontier block */}
+      <YugaSignalBlock cards={getFrontierCards()} />
+    </>
   );
 }

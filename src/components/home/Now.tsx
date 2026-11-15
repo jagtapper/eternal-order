@@ -3,19 +3,29 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { ArrowUpRight } from "@phosphor-icons/react/dist/ssr";
 import type { NowNote, Spotlight } from "@/lib/now";
+import type { FrontierCard } from "@/lib/frontier";
+import { FrontierThumb } from "@/components/content/FrontierThumb";
+import { YugaSignalInviteLinks } from "@/components/content/YugaSignalInvite";
 
 function Feed({
   label,
+  marker,
+  className = "",
   children,
 }: {
   label: string;
+  marker?: ReactNode;
+  className?: string;
   children: ReactNode;
 }) {
   return (
-    <div className="flex min-h-0 flex-col">
-      <p className="mb-2.5 font-display text-base font-semibold tracking-tight text-gold md:text-lg">
-        {label}
-      </p>
+    <div className={`flex min-h-0 flex-col ${className}`}>
+      <div className="mb-2.5 flex items-center justify-between gap-3">
+        <p className="font-display text-base font-semibold tracking-tight text-gold md:text-lg">
+          {label}
+        </p>
+        {marker}
+      </div>
       <div
         data-lenis-prevent
         className="now-feed max-h-[15.5rem] space-y-3 overflow-y-auto overscroll-contain rounded-[1.4rem] border border-ivory/14 bg-ink/20 p-2 md:max-h-[min(52rem,72vh)] md:p-2.5"
@@ -90,17 +100,67 @@ function SpotlightCard({ item }: { item: Spotlight }) {
   );
 }
 
+// Yuga Signal frontier tile (links to /education/yuga-signal/<slug>)
+// Tiles use the generated `thumbnail` when present; card pages keep the rights-safe still.
+function FrontierTile({ card }: { card: FrontierCard }) {
+  return (
+    <Link href={`/education/yuga-signal/${card.slug}`} className="group block">
+      <article className="overflow-hidden rounded-[1.25rem] border border-ivory/10 bg-ink/55">
+        <FrontierThumb card={card} aspect={2} aspectClass="aspect-[16/8]" />
+        <div className="flex items-start justify-between gap-3 px-4 py-3">
+          <div className="min-w-0">
+            {card.thumbLabel ? (
+              <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-stone">
+                {card.thumbLabel}
+              </p>
+            ) : null}
+            <h3 className="font-display text-lg leading-tight tracking-tight text-ivory">
+              {card.title}
+            </h3>
+            <p className="mt-1.5 line-clamp-2 text-[13px] leading-relaxed text-ivory-dim">
+              {card.description}
+            </p>
+            <p className="mt-1 text-[12px] text-stone">
+              {card.source} · {card.citation}
+            </p>
+          </div>
+          <ArrowUpRight
+            size={16}
+            weight="light"
+            className="mt-1 shrink-0 text-gold"
+          />
+        </div>
+      </article>
+    </Link>
+  );
+}
+
 export function Now({
   notes = [],
   spotlights = [],
+  frontier = [],
 }: {
   notes?: NowNote[];
   spotlights?: Spotlight[];
+  frontier?: FrontierCard[];
 }) {
-  if (notes.length === 0 && spotlights.length === 0) return null;
+  if (notes.length === 0 && spotlights.length === 0 && frontier.length === 0)
+    return null;
 
   return (
-    <div className="grid gap-5 sm:grid-cols-2 sm:gap-4">
+    <div className="grid gap-5 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
+      {frontier.length > 0 ? (
+        <div className="flex min-h-0 flex-col sm:col-span-2 lg:col-span-1">
+          <Feed
+            label="Yuga Signal"
+          >
+            {frontier.map((card) => (
+              <FrontierTile key={card.slug} card={card} />
+            ))}
+          </Feed>
+          <YugaSignalInviteLinks className="mt-2.5" />
+        </div>
+      ) : null}
       {notes.length > 0 ? (
         <Feed label="Michigan Now">
           {notes.map((note) => (

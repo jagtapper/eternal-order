@@ -4,11 +4,17 @@ import { FormEvent, useId, useState } from "react";
 import { ArrowUpRight } from "@phosphor-icons/react";
 
 type Status = "idle" | "saving" | "done" | "error";
-type Variant = "footer" | "hero";
+type Variant = "footer" | "hero" | "embed";
 
 const WEB3FORMS = "https://api.web3forms.com/submit";
 
-export function Subscribe({ variant = "footer" }: { variant?: Variant }) {
+export function Subscribe({
+  variant = "footer",
+  hint,
+}: {
+  variant?: Variant;
+  hint?: string;
+}) {
   const uid = useId();
   const emailId = `subscribe-email-${uid}`;
   const companyId = `subscribe-company-${uid}`;
@@ -85,7 +91,7 @@ export function Subscribe({ variant = "footer" }: { variant?: Variant }) {
           {message}
         </p>
       ) : (
-        <form onSubmit={onSubmit} className={compact ? "w-full" : "mt-8 max-w-xl"}>
+        <form onSubmit={onSubmit} className={compact ? "w-full" : variant === "embed" ? "mt-5 max-w-xl" : "mt-8 max-w-xl"}>
           <label
             htmlFor={emailId}
             className={
@@ -153,13 +159,17 @@ export function Subscribe({ variant = "footer" }: { variant?: Variant }) {
             </p>
           ) : compact ? null : (
             <p className="mt-3 text-sm text-stone">
-              One note when a new pulse is up. That is all.
+              {hint ?? "One note when a new pulse is up. That is all."}
             </p>
           )}
         </form>
       )}
     </>
   );
+
+  if (variant === "embed") {
+    return <div className="w-full">{form}</div>;
+  }
 
   if (compact) {
     return (

@@ -5,6 +5,7 @@ import { Now } from "@/components/home/Now";
 import { Subscribe } from "@/components/site/Subscribe";
 import { formatDate, type Article } from "@/lib/content";
 import type { NowNote, Spotlight } from "@/lib/now";
+import type { FrontierCard } from "@/lib/frontier";
 import { kindMeta } from "@/lib/site";
 
 const lanes = [
@@ -42,10 +43,12 @@ export function Hero({
   newest,
   notes = [],
   spotlights = [],
+  frontier = [],
 }: {
   newest: Article;
   notes?: NowNote[];
   spotlights?: Spotlight[];
+  frontier?: FrontierCard[];
 }) {
   const latestHref = `${kindMeta[newest.kind].href}/${newest.slug}`;
 
@@ -73,7 +76,7 @@ export function Hero({
 
       <div className="relative z-10 mx-auto flex min-h-[100dvh] max-w-[1180px] flex-col justify-between gap-6 px-5 pb-8 pt-24 md:gap-8 md:px-8 md:pb-12 md:pt-[6.75rem]">
         <div data-hero-item>
-          <Now notes={notes} spotlights={spotlights} />
+          <Now notes={notes} spotlights={spotlights} frontier={frontier} />
         </div>
 
         <div className="flex flex-col gap-6 md:gap-8">
