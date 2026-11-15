@@ -8,9 +8,7 @@ import { mdxComponents } from "@/components/content/Mdx";
 // Yuga Signal frontier cards. content/yuga-signal/*.mdx,
 // ranked by the weekly frontier slate (not by date).
 
-/** Bhau's Yuga Signal Grokbot link (provided 2026-11-13). */
-export const GROKBOT_LINK =
-  "https://grok.com/refer/bot?code=5D2R93B7V74W";
+export { GROKBOT_LINK, YUGA_TEMPLATE_LINK } from "@/lib/yuga-links";
 
 export type FrontierCard = {
   slug: string;

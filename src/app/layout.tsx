@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Eczar, Geist_Mono, Inknut_Antiqua, Noto_Serif_Devanagari } from "next/font/google";
 import { Footer } from "@/components/site/Footer";
+import { YugaSignalOffer } from "@/components/site/YugaSignalOffer";
 import { Nav } from "@/components/site/Nav";
 import { Analytics } from "@/components/site/Analytics";
 import { MotionRoot } from "@/components/motion/MotionRoot";
@@ -94,6 +95,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         />
         <main className="relative z-[1] flex-1">{children}</main>
         <Footer />
+        <YugaSignalOffer />
       </body>
     </html>
   );
