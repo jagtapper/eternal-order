@@ -5,7 +5,6 @@ import { ArrowUpRight } from "@phosphor-icons/react/dist/ssr";
 import type { NowNote, Spotlight } from "@/lib/now";
 import type { FrontierCard } from "@/lib/frontier";
 import { FrontierThumb } from "@/components/content/FrontierThumb";
-import { YugaSignalInviteLinks } from "@/components/content/YugaSignalInvite";
 
 function Feed({
   label,
@@ -158,7 +157,6 @@ export function Now({
               <FrontierTile key={card.slug} card={card} />
             ))}
           </Feed>
-          <YugaSignalInviteLinks className="mt-2.5" />
         </div>
       ) : null}
       {notes.length > 0 ? (

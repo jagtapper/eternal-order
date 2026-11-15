@@ -4,7 +4,7 @@ import { FormEvent, useId, useState } from "react";
 import { ArrowUpRight } from "@phosphor-icons/react";
 
 type Status = "idle" | "saving" | "done" | "error";
-type Variant = "footer" | "hero" | "embed";
+type Variant = "footer" | "hero" | "embed" | "inline";
 
 const WEB3FORMS = "https://api.web3forms.com/submit";
 
@@ -18,7 +18,7 @@ export function Subscribe({
   const uid = useId();
   const emailId = `subscribe-email-${uid}`;
   const companyId = `subscribe-company-${uid}`;
-  const compact = variant === "hero";
+  const compact = variant === "hero" || variant === "inline";
 
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<Status>("idle");
@@ -166,6 +166,10 @@ export function Subscribe({
       )}
     </>
   );
+
+  if (variant === "inline") {
+    return <div className="w-full">{form}</div>;
+  }
 
   if (variant === "embed") {
     return <div className="w-full">{form}</div>;

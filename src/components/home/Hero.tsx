@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Atmosphere } from "@/components/motion/Atmosphere";
 import { Now } from "@/components/home/Now";
+import { YugaSignalInviteBar } from "@/components/content/YugaSignalInvite";
 import { Subscribe } from "@/components/site/Subscribe";
 import { formatDate, type Article } from "@/lib/content";
 import type { NowNote, Spotlight } from "@/lib/now";
@@ -78,6 +79,12 @@ export function Hero({
         <div data-hero-item>
           <Now notes={notes} spotlights={spotlights} frontier={frontier} />
         </div>
+
+        {frontier.length > 0 ? (
+          <div data-hero-item>
+            <YugaSignalInviteBar />
+          </div>
+        ) : null}
 
         <div className="flex flex-col gap-6 md:gap-8">
         <div
