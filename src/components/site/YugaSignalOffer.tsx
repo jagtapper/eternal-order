@@ -12,6 +12,7 @@ import { GROKBOT_LINK, YUGA_TEMPLATE_LINK } from "@/lib/yuga-links";
 const INITIAL_DELAY = 1500;
 const DESKTOP_COOLDOWN = 2500;
 const SCROLL_DEPTH = 0.25;
+const MOBILE_TIME_ON_PAGE = 3000;
 
 export function YugaSignalOffer() {
   const [open, setOpen] = useState(false);
@@ -52,7 +53,15 @@ export function YugaSignalOffer() {
         if (maxY / range >= SCROLL_DEPTH) setShowButton(true);
       };
       window.addEventListener("scroll", onScroll, { passive: true });
-      return () => window.removeEventListener("scroll", onScroll);
+      // Also show after 3 s on the page, whichever comes first.
+      const timer = window.setTimeout(
+        () => setShowButton(true),
+        MOBILE_TIME_ON_PAGE,
+      );
+      return () => {
+        window.removeEventListener("scroll", onScroll);
+        window.clearTimeout(timer);
+      };
     }
 
     const onLeave = (e: MouseEvent) => {
