@@ -4,6 +4,9 @@ import matter from "gray-matter";
 import { getFrontierCards } from "@/lib/frontier";
 import { site } from "@/lib/site";
 
+// Subscriber bots follow these links, so never emit a localhost URL.
+const BASE = site.url.includes("localhost") ? "https://eternalorder.org" : site.url;
+
 // Machine-readable Yuga Signal feed (JSON Feed 1.1) for readers' Grokbots.
 // Each subscriber's bot reads this, picks posts newer than the last one it
 // saw, and writes a personalized brief. Flip PREVIEW to false at go-live.
@@ -28,7 +31,7 @@ export function GET() {
     .sort((a, b) => a.displayOrder - b.displayOrder || a.rank - b.rank)
     .map((c) => {
       const raw = fs.readFileSync(path.join(dir, `${c.slug}.mdx`), "utf8");
-      const url = `${site.url}/education/yuga-signal/${c.slug}`;
+      const url = `${BASE}/education/yuga-signal/${c.slug}`;
       return {
         id: c.id,
         url,
@@ -36,7 +39,7 @@ export function GET() {
         summary: c.description,
         content_text: plain(matter(raw).content),
         date_published: `${c.date}T00:00:00-05:00`,
-        image: c.thumbnail ? `${site.url}${c.thumbnail}` : undefined,
+        image: c.thumbnail ? `${BASE}${c.thumbnail}` : undefined,
         tags: [c.signal].filter(Boolean),
         _yuga_signal: {
           signal: c.signal,
@@ -55,8 +58,8 @@ export function GET() {
   return Response.json({
     version: "https://jsonfeed.org/version/1.1",
     title: "Yuga Signal | Eternal Order",
-    home_page_url: `${site.url}/education`,
-    feed_url: `${site.url}/yuga-signal/feed.json`,
+    home_page_url: `${BASE}/education`,
+    feed_url: `${BASE}/yuga-signal/feed.json`,
     description:
       "Primary-sourced frontier breakthroughs, each with a Yuga signal and a cited Dharmic parallel.",
     _preview: PREVIEW,
