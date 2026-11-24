@@ -2,7 +2,11 @@ export const site = {
   name: "Eternal Order | Sanatan Dharma",
   shortName: "Eternal Order",
   subtitle: "Sanatan Dharma",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
+  url:
+    process.env.NEXT_PUBLIC_SITE_URL ??
+    (process.env.NODE_ENV === "production"
+      ? "https://eternalorder.org"
+      : "http://localhost:3000"),
   title: "Eternal Order | Sanatan Dharma",
   tagline: "A Way of Life, not a Religion.",
   description:
